@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="./Interface/Resources/Polygon.png">
+
+
+    <title>Linear Program Solver</title>
+
+    <link rel="stylesheet" type="text/css" href="Interface/CSS/mainStyle.css" />
+
+    <!-- http://algebra.js.org/ -->
+    <script src="Libraries/algebra-0.2.6.min.js"></script>
+
+    <script src="Interface/JavaScript/frontend.js"></script>
+    <script src="Interface/JavaScript/parser.js"></script>
+    
+    <script src="JavaScript/LinearOptimization/Variable.js"></script>
+    <script src="JavaScript/LinearOptimization/Constraint.js"></script>
+    <script src="JavaScript/LinearOptimization/ObjectiveFunction.js"></script>
+    <script src="JavaScript/LinearOptimization/Simplex/Simplex.js"></script>
+    <script src="JavaScript/LinearOptimization/Simplex/PrimalSimplex.js"></script>
+    <script src="JavaScript/LinearOptimization/Simplex/DualSimplex.js"></script>
+    <script src="JavaScript/LinearOptimization/Simplex/BigM.js"></script>
+    <script src="JavaScript/LinearOptimization/Simplex/SimplexTableau.js"></script>
+
+    <script src="JavaScript/LinearOptimization/Enums/ProblemTypeEnum.js"></script>
+    <script src="JavaScript/LinearOptimization/Enums/VariableTypeEnum.js"></script>
+    <script src="JavaScript/LinearOptimization/Enums/ConstraintTypeEnum.js"></script>
+    <script src="JavaScript/LinearOptimization/Enums/SimplexTypeEnum.js"></script>
+    <script src="JavaScript/LinearOptimization/Enums/SimplexVariableTypeEnum.js"></script>
+    <script src="JavaScript/LinearOptimization/Enums/SimplexTableauStateEnum.js"></script>
+
+    <script src="JavaScript/Mathematics/Matrix.js"></script>
+    <script src="JavaScript/Utils/prototypeUtils.js"></script>
+    <script src="JavaScript/Utils/elementUtils.js"></script>
+
+</head>
+<body>
+    <header>
+        <div id = "navbarContainer">
+            <img id="logoImage" src="./Interface/Resources/Polygon.png";>
+            <div id = "navbar">
+                <a href="#">LP-Solver</a>
+                <a href="#">Travelling Salesmen</a>
+                <a href="#" onclick="toggleAboutSection()">About</a>
+            </div>
+        </div>
+    </header>
+    <div id = "content">
+        <div id="about">
+            <p>
+                This website is a simple solver for linear programs. The solver is built using the simplex algorithm and is implemented in Javascript. Therefore, the performance probably is not very good. 
+
+                Please check out the website's github project:
+                <br>
+                <br>
+            </p>
+            <a href="https://github.com/Muelli21/TravellingSalesmenProblem">Github</a>
+        </div>
+        <div id = "flexContainer">
+            <div class = "one-reduced" id ="errorDiv">
+                <div id = "errorAlert">
+
+                </div>
+            </div>
+            <div class = "one">
+                <div class = "textInput">
+                    <textarea name="objective" id="objective" 
+                    placeholder = 
+"   
+    1. Define your objective function
+        e.g.
+        max z = 2x1 + 3x1 + (5*20+1)x2 + 1x3
+        min goal = 3kiwi - (2w + 102a)
+
+"
+                    ></textarea>
+                </div>
+            </div>
+            <div class = "one-half">
+                <div class = "textInput">
+                    <textarea name="variables" id="variables" 
+                    placeholder = 
+"
+    2. Define your variables
+        e.g.
+
+        x1 : non-negative and element of I;
+        x2 : non-negative;
+        x3 : element of R;
+        kiwi : element of I;
+"
+                ></textarea>
+                </div>
+            </div>
+            <div class = "one-half">
+                <div class = "textInput">
+                    <textarea name="constraints" id="constraints"
+                    placeholder = 
+"
+    3. Define your constraints
+        e.g. 
+
+        3x1 + 4x2 -1x3 >= 9;
+        5x1 + 700x2 = 100;
+        100x1 -10x2 <= 90 + 30x4;
+"
+                    ></textarea>
+                </div>
+            </div> 
+            <div class = "one-reduced" id = "solveButtonDiv">
+                <a id = "solveButton" href="#" onclick="parseUserInputToSimplex()">Solve</a>
+            </div>  
+        </div>
+    </div>
+    <footer>
+        <div id = "footerContainer">
+            <div id = "navbar">
+                <a href="https://www.instagram.com/wal_lew/">@Valentin Roth</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
