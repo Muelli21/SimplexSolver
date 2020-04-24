@@ -1,0 +1,84 @@
+max revenue = 2apple + 0.3333pear
+
+apple : non-negative and element of I;
+pear : non-negative and element of I;
+
+0.767apple + 1pear <= 14;
+pear >= 3;
+
+
+##################
+
+max z = 3x1 + 4x2
+
+x1: element of I;
+x2: element of I;
+
+6x1 + 5x2 <= 25;
+3x1 + 5x2 <= 20;
+
+##################
+
+Problem 13: Primal Simplex
+
+max z = 5x1 - 7x2 + 3x3
+
+x1: non-negative;
+x2: non-negative;
+x3: non-negative;
+
+x1 + x2 + 2x3 <= 17;
+2x1 + 4x2 - 2x3 <= 11;
+x1 + x2 - 3x3 >= -8;
+
+##################
+
+Problem 23: Dual Simplex
+
+min z = 200x1 + 160x2
+
+x1: non-negative;
+x2: non-negative;
+
+6x1 + 2x2 >= 12;
+2x1 + 2x2 >= 8;
+4x1 + 12x2 >= 24;
+
+##################
+
+Problem 18: BigM
+
+max z = 2x1 + x2
+
+x1: non-negative;
+x2: non-negative;
+
+-2x1 + 5x2 <= 0;
+-x1 - 2x2 <= -9;
+2x1 + x2 <= 12;
+
+##################
+
+Production Management: 
+
+min cost = 5DesAlb + 4DesBos + 3DesCle + 8EvaAlb + 4EvaBos + 3EvaCle + 9ForAlb + 7ForBos + 5ForCle
+
+DesAlb : element of I;
+DesBos : element of I;
+DesCle : element of I;
+
+EvaAlb : element of I;
+EvaBos : element of I;
+EvaCle : element of I;
+
+ForAlb : element of I;
+ForBos : element of I;
+ForCle : element of I;
+
+DesAlb + DesBos + DesCle <= 100;
+EvaAlb + EvaBos + EvaCle <= 300;
+ForAlb + ForBos + ForCle <= 300;
+
+DesAlb + EvaAlb + ForAlb >= 300;
+DesBos + EvaBos + ForBos >= 200;
+DesCle + EvaCle + ForCle >= 200;

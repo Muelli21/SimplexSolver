@@ -27,7 +27,7 @@ class Matrix {
 
     setRows(numberOfRows) {
         this.rows = numberOfRows;
-    } 
+    }
 
     getRows() {
         return this.rows;
@@ -50,12 +50,13 @@ class Matrix {
         this.matrix.splice(rowIndex, 0, Array(this.columns).fill(0));
     }
 
-    addColumns(columnIndex) {
+    addColumn(columnIndex) {
         if (columnIndex > this.columns) {
             console.log("The given column-index is out of bound!");
             return;
         }
 
+        this.columns++;
         for (let row of this.matrix) {
             row.splice(columnIndex, 0, 0);
         }
@@ -144,6 +145,23 @@ function multiplyRow(matrixObject, rowIndex, factor) {
     }
 }
 
+// USING Big.js FOR HIGHER PRECISION 
+// multiplies row A with a factor
+function multiplyRowBig(matrixObject, rowIndex, factor) {
+    let matrix = matrixObject.getMatrix();
+    let row = matrix[rowIndex];
+    let bigFactor = new Big(factor);
+
+    let columnIndex = 0;
+    for (let entry of row) {
+        let bigEntry = new Big(entry);
+        let number = Number(bigEntry.times(bigFactor).round(10));
+
+        matrix[rowIndex][columnIndex] = number;
+        columnIndex++;
+    }
+}
+
 // adds row A multiplied by a factor to row B
 function rowAddition(matrixObject, rowIndexA, rowIndexB, factor) {
     let matrix = matrixObject.getMatrix();
@@ -154,6 +172,27 @@ function rowAddition(matrixObject, rowIndexA, rowIndexB, factor) {
     for (let entryA of rowA) {
         let entryB = rowB[columnIndex];
         rowB[columnIndex] = entryB + factor * entryA;
+        columnIndex++;
+    }
+}
+
+// USING Big.js FOR HIGHER PRECISION 
+// adds row A multiplied by a factor to row B
+function rowAdditionBig(matrixObject, rowIndexA, rowIndexB, factor) {
+    let matrix = matrixObject.getMatrix();
+    let rowA = matrix[rowIndexA];
+    let rowB = matrix[rowIndexB];
+    let bigFactor = new Big(factor);
+
+    let columnIndex = 0;
+    for (let entryA of rowA) {
+        let entryB = rowB[columnIndex];
+
+        let bigEntryA = new Big(entryA);
+        let bigEntryB = new Big(entryB);
+        let number = Number(bigEntryB.plus(bigEntryA.times(bigFactor)).round(10));
+
+        rowB[columnIndex] = number;
         columnIndex++;
     }
 }

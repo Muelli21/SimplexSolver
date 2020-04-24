@@ -2,6 +2,8 @@ var establishedVariables = [];
 
 function parseUserInputToSimplex() {
 
+    resetErrorAlert();
+
     let objectiveFunctionTextarea = document.getElementById("objective");
     let variablesTextarea = document.getElementById("variables");
     let constraintsTextarea = document.getElementById("constraints");
@@ -20,14 +22,16 @@ function parseUserInputToSimplex() {
     }
 
     let simplex = new Simplex(objectiveFunction, decisionVariables, constraints);
-
-    console.log(simplex);
-
     let simplexTableau = simplex.apply();
+    
     console.log([simplex, simplexTableau]);
+    displayResults(simplex, simplexTableau, null);
 }
 
 function parseObjectiveFunction(input) {
+    let semicolon = /\;/g;
+    input.replace(semicolon, "");
+
     let regExpression = /\=/g;
 
     if (input.numberOfMatches(regExpression) != 1) {
