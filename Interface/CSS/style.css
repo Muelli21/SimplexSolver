@@ -54,14 +54,6 @@ body {
     transition-property: background-color, color;
 }
 
-body::-webkit-scrollbar {
-    width: 5px;
-}
-
-body::-webkit-scrollbar-thumb {
-    background: var(--sliderColor);
-}
-
 #colorBanner {
     height: 3px;
     width: 100%;
@@ -177,42 +169,8 @@ textarea {
 
 #results {
     margin-bottom: 3em;
-}
-
-#tableContainer {
-    overflow-x: scroll;
-    overflow-y: scroll;
+    display: none;
     font-family: monospace;
-    width: 100%;
-    max-height: 80vh;
-}
-
-#tableContainer::-webkit-scrollbar {
-    width: 2px;
-    height: 2px;
-}
-
-#tableContainer::-webkit-scrollbar-thumb {
-    background: var(--sliderColor);
-    border-radius: 5px;
-}
-
-.solutionTable {
-    font-family: monospace;
-}
-
-.solutionTable th, .solutionTable td {
-    text-align: center;
-    padding: 5px 10px;
-}
-
-.solutionTable td:first-child, .solutionTable th:first-child {
-    text-align: left;
-}​
-
-#about {
-    transition: 0.5s;
-    transition-property: height; 
 }
 
 footer {
@@ -252,8 +210,8 @@ footer a {
         "instruction3"
         "input3";
         gap: 0 5px;
-        height: 110vh;
-        grid-template-rows: max-content auto max-content auto max-content auto;
+        height: 150vh;
+        grid-template-rows: max-content 20vh max-content auto max-content auto;
         grid-template-columns: 1fr;
     }
 }

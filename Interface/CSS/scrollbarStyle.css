@@ -1,0 +1,21 @@
+body::-webkit-scrollbar {
+    width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--sliderColor);
+}
+
+body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.tableauContainer::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+.tableauContainer::-webkit-scrollbar-thumb {
+    background: var(--sliderColor);
+    border-radius: 5px;
+}

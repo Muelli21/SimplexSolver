@@ -1,4 +1,7 @@
 var darkMode = false;
+var currentSimplex;
+var currentSimplexTableau;
+var currentBranchAndBound;
 
 function toggleAboutSection() {
     let section = document.getElementById("about");
@@ -27,19 +30,61 @@ function resetErrorAlert() {
 }
 
 function displayResults(simplex, simplexTableau, branchAndBound) {
+
+    currentSimplex = simplex;
+    currentSimplexTableau = simplexTableau;
+    currentBranchAndBound = branchAndBound;
+
+    let results = document.getElementById("results");
     let tableContainer = document.getElementById("tableContainer");
+
+    clearAllSections();
+    toggleDisplayVisibility(results, true);
+
+    let coefficientMatrix = simplexTableau.getCoefficientMatrix();
+    let bigMCoefficientMatrix = simplexTableau.getBigMCoefficientMatrix();
+    let basis = simplexTableau.getBasis();
+
+    displaySimplexTableau(simplex, simplexTableau, coefficientMatrix, bigMCoefficientMatrix, basis, tableContainer, "solutionTable", "solutionTable");
+}
+
+function showHistory() {
+
+    let container = document.getElementById("historyContainer");
+    clearElement(container);
+
+    let simplex = currentSimplex;
+    let simplexTableau = currentSimplexTableau;
+
+    let archivedInformation = simplexTableau.getArchivedInformation();
+    let archivedBases = archivedInformation[0];
+    let archivedCoefficientMatrices = archivedInformation[1];
+    let archivedBigMCoefficientMatrices = archivedInformation[2];
+
+    for (let index = 0; index < archivedBases.length; index++) {
+        let basis = archivedBases[index];
+        let coefficientMatrix = archivedCoefficientMatrices[index];
+        let bigMCoefficientMatrix = null;
+
+        if (index < archivedBigMCoefficientMatrices.length) {
+            bigMCoefficientMatrix = archivedBigMCoefficientMatrices[index];
+        }
+
+        let tableUnit = createHTMLElement(container, "div", "tableUnit");
+        createTextElement(tableUnit, "Simplex iteration: " + index, "iterationText");
+        displaySimplexTableau(simplex, simplexTableau, coefficientMatrix, bigMCoefficientMatrix, basis, tableUnit, "historyTable" + index, "solutionTable");
+    }
+}
+
+function displaySimplexTableau(simplex, simplexTableau, coefficientMatrixObject, bigMCoefficientMatrixObject, basis, tableContainer, tableId, tableClassName) {
 
     let objectiveFunction = simplex.getObjectiveFunction();
     let objectiveFunctionVariableName = objectiveFunction.getObjectiveFunctionVariableName();
 
-    let basis = simplexTableau.getBasis();
     let decisionVariablesMap = simplexTableau.getDecisionVariables();
     let variableTypeVector = simplexTableau.getVariableTypeVector();
-    let tableauStates = simplexTableau.getSimplexTableauStates();
 
-    let coefficientMatrixObject = simplexTableau.getCoefficientMatrix();
     let coefficientMatrix = coefficientMatrixObject.getMatrix();
-    let bigMCoefficientMatrixObject = simplexTableau.getBigMCoefficientMatrix();
     let bigMCoefficientMatrix = null;
 
     if (bigMCoefficientMatrixObject != null) {
@@ -108,7 +153,7 @@ function displayResults(simplex, simplexTableau, branchAndBound) {
         contentMatrix.push(contentRow);
     }
 
-    let solutionTable = createTable("solutionTable", "solutionTable", headingsArray, contentMatrix);
+    let solutionTable = createTable(tableId, tableClassName, headingsArray, contentMatrix);
     tableContainer.appendChild(solutionTable);
 }
 

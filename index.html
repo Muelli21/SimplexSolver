@@ -14,6 +14,8 @@
     <title>Linear Program Solver</title>
 
     <link rel="stylesheet" type="text/css" href="Interface/CSS/style.css" />
+    <link rel="stylesheet" type="text/css" href="Interface/CSS/tableStyle.css" />
+    <link rel="stylesheet" type="text/css" href="Interface/CSS/scrollbarStyle.css" />
 
     <!-- http://algebra.js.org/ -->
     <script src="Libraries/algebra-0.2.6.min.js"></script>
@@ -69,9 +71,12 @@
 
         <div id="about" class="font1">
             <p>
-                This website is built to solve linear optimization problems using the Simplex Algorithm. Is is capable of solving Integer and Mixed Integer Problems as well as long as their variables are defined properly. The Simplex and Branch and Bound Algorithm utilized are implemented in Javascript. 
+                This website is built to solve linear optimization problems using the Simplex Algorithm. Is is capable
+                of solving Integer and Mixed Integer Problems as well as long as their variables are defined properly.
+                The Simplex and Branch and Bound Algorithm utilized are implemented in Javascript.
 
-                Please check out the website's github project: <a href="https://github.com/Muelli21/SimplexSolver">Github</a>
+                Please check out the website's github project: <a
+                    href="https://github.com/Muelli21/SimplexSolver">Github</a>
             </p>
         </div>
 
@@ -81,7 +86,7 @@
                 <p>Please define the objective function here!</p>
                 <p class="example">
                     EXAMPLES:
-                    "max z = 2x1 + 3x1 + (5*20+1)x2 + 1x3"  or
+                    "max z = 2x1 + 3x1 + (5*20+1)x2 + 1x3" or
                     "min goal = 3kiwi - (2w + 102a)"
                 </p>
             </div>
@@ -102,8 +107,7 @@
                     EXAMPLES:
                     "3x1 + 4x2 -1x3 >= 9;"
                     "5x1 + 700x2 = 100;"
-                    "100x1 -10x2 <= 90 + 30x4;"
-                </p> 
+                    "100x1 -10x2 <= 90 + 30x4;" </p>
             </div>
 
             <div id="inputDiv1">
@@ -121,11 +125,19 @@
         </div>
 
         <div class="button">
-            <a href="#" onclick="parseUserInputToSimplex()" class="font2">Solve</a>
+            <a href="#results" onclick="parseUserInputToSimplex()" class="font2">Solve</a>
         </div>
 
         <div id="results" class="font2">
-            <div id="tableContainer">
+            <h1>SOLUTION</h1>
+            <p>Final simplex tableau:</p>
+            <div id="tableContainer" class="tableauContainer toClear">
+
+            </div>
+            <div class="button">
+                <a href="#historyContainer" onclick="showHistory()" class="font2">Show history</a>
+            </div>
+            <div id="historyContainer" class="tableauContainer toClear">
 
             </div>
         </div>

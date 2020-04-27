@@ -1,0 +1,21 @@
+.tableauContainer {
+    overflow-x: scroll;
+    overflow-y: scroll;
+    font-family: monospace;
+    width: 100%;
+    max-height: 80vh;
+}
+
+.solutionTable {
+    font-family: monospace;
+    border-collapse: collapse;
+}
+
+.solutionTable th, .solutionTable td {
+    text-align: center;
+    padding: 5px 10px;
+}
+
+.solutionTable td:first-child, .solutionTable th:first-child {
+    text-align: left;
+}

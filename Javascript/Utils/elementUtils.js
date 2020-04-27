@@ -4,8 +4,6 @@ function clearAllSections() {
     for (let element of elementsToClear) {
         clearElement(element);
     }
-    clearParticipantsSection();
-    clearParticipantsButtonsSection();
 }
 
 function clearElement(element) {
@@ -23,9 +21,9 @@ function createHTMLElement(parentElement, type, className) {
 
 function createTextElement(parentElement, text, className) {
     let element = document.createElement("p");
-    let elementText = document.createTextNode(text);
     element.className = className;
-    element.appendChild(elementText);
+    
+    element.textContent = text;
     parentElement.appendChild(element);
     return element;
 }
