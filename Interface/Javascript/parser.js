@@ -21,6 +21,10 @@ function parseUserInputToSimplex() {
         return;
     }
 
+    if (constraints == null) {
+        return; 
+    }
+
     let simplex = new Simplex(objectiveFunction, decisionVariables, constraints);
     let simplexTableau = simplex.apply();
     
@@ -124,7 +128,7 @@ function parseConstraints(input) {
         let equation = simplifyEquation(lhsString, rhsString);
         if (equation[0] == null) {
             errorAlert("Constraint: " + line + "\n" + equation[1]);
-            continue;
+            return null;
         }
 
         let lhs = equation[0];

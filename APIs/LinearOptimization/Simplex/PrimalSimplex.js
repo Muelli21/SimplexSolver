@@ -94,7 +94,8 @@ class PrimalSimplex extends AbstractSimplex {
 
         //All coefficients in the pivot column are smaller equal zero -> unbound problem
         if (smallestFraction == -1) {
-            this.tableau.setTableauState(TableauState.UNBOUND);
+            this.tableau.removeTableauState(TableauState.FEASIBLE);
+            this.tableau.addTableauState(TableauState.UNBOUND);
             return [-1, -1];
         }
 
