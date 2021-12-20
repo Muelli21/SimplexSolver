@@ -41,8 +41,8 @@ function displayResults(simplex, simplexTableau, branchAndBound) {
     clearAllSections();
     toggleDisplayVisibility(results, true);
 
-    let coefficientMatrix = simplexTableau.getCoefficientMatrix();
-    let bigMCoefficientMatrix = simplexTableau.getBigMCoefficientMatrix();
+    let coefficientMatrix = simplexTableau.getMatrix();
+    let bigMCoefficientMatrix = simplexTableau.getBigMMatrix();
     let basis = simplexTableau.getBasis();
 
     displaySimplexTableau(simplex, simplexTableau, coefficientMatrix, bigMCoefficientMatrix, basis, tableContainer, "solutionTable", "solutionTable");
@@ -76,20 +76,13 @@ function showHistory() {
     }
 }
 
-function displaySimplexTableau(simplex, simplexTableau, coefficientMatrixObject, bigMCoefficientMatrixObject, basis, tableContainer, tableId, tableClassName) {
+function displaySimplexTableau(simplex, simplexTableau, coefficientMatrix, bigMCoefficientMatrix, basis, tableContainer, tableId, tableClassName) {
 
     let objectiveFunction = simplex.getObjectiveFunction();
-    let objectiveFunctionVariableName = objectiveFunction.getObjectiveFunctionVariableName();
+    let objectiveFunctionVariableName = objectiveFunction.getName();
 
     let decisionVariablesMap = simplexTableau.getDecisionVariables();
-    let variableTypeVector = simplexTableau.getVariableTypeVector();
-
-    let coefficientMatrix = coefficientMatrixObject.getMatrix();
-    let bigMCoefficientMatrix = null;
-
-    if (bigMCoefficientMatrixObject != null) {
-        bigMCoefficientMatrix = bigMCoefficientMatrixObject.getMatrix();
-    }
+    let variableTypeVector = simplexTableau.getTableauVariableTypes();
 
     let variableNames = [...decisionVariablesMap.keys()];
 
@@ -102,11 +95,11 @@ function displaySimplexTableau(simplex, simplexTableau, coefficientMatrixObject,
         let variableType = variableTypeVector[index];
 
         switch (variableType) {
-            case SimplexVariableType.SLACK_VARIABLE:
+            case TableauVariableType.SLACK_VARIABLE:
                 variableNames.push("slack" + (numberOfSlackVariables + 1));
                 numberOfSlackVariables++;
                 break;
-            case SimplexVariableType.ARTIFICIAL_VARIABLE:
+            case TableauVariableType.ARTIFICIAL_VARIABLE:
                 variableNames.push("artificial" + (numberOfArtificialVariables + 1));
                 numberOfArtificialVariables++;
                 break;
@@ -116,8 +109,8 @@ function displaySimplexTableau(simplex, simplexTableau, coefficientMatrixObject,
     let headingsArray = ["Basis", "Values", ...variableNames];
     let contentMatrix = [];
 
-    let numberOfRows = coefficientMatrixObject.getRows();
-    let numberOfColumns = coefficientMatrixObject.getColumns();
+    let numberOfRows = coefficientMatrix.size()[0];
+    let numberOfColumns = coefficientMatrix.size()[1];
 
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
         let contentRow = [];
@@ -129,15 +122,16 @@ function displaySimplexTableau(simplex, simplexTableau, coefficientMatrixObject,
         contentRow.push(variableName);
 
         for (let columnIndex = 0; columnIndex < numberOfColumns; columnIndex++) {
-            let entry = coefficientMatrix[rowIndex][columnIndex];
+
+            let entry = coefficientMatrix.subset(math.index(rowIndex, columnIndex));
             let tableEntry = "";
 
             if (bigMCoefficientMatrix != null) {
-                let numberOfBigMRows = bigMCoefficientMatrixObject.getRows();
-                let numberOfBigMColumns = bigMCoefficientMatrixObject.getColumns();
+                let numberOfBigMRows = bigMCoefficientMatrix.size()[0];
+                let numberOfBigMColumns = bigMCoefficientMatrix.size()[1];
 
                 if (rowIndex < numberOfBigMRows && columnIndex < numberOfBigMColumns) {
-                    let bigMEntry = bigMCoefficientMatrix[rowIndex][columnIndex];
+                    let bigMEntry = bigMCoefficientMatrix.subset(math.index(rowIndex, columnIndex));
 
                     if (bigMEntry != 0) {
                         tableEntry = tableEntry + bigMEntry.toFixed(2);
