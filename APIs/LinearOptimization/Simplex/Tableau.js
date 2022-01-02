@@ -10,8 +10,6 @@
 class Tableau {
     constructor(decisionVariables, tableauVariableTypes, matrix, basis) {
 
-        console.log(tableauVariableTypes);
-
         this.decisionVariables = decisionVariables; //Type: Map - key: variablename, value: variable
         this.tableauVariableTypes = tableauVariableTypes; //Type: Array - array of simplex variable type enums
         this.tableauStates = new Set([]); //Type: Set - states: feasible, infeasible, dual-feasible, bigM-feasible, optimal, primal degenerated, dual degenerated, unbound
@@ -76,6 +74,15 @@ class Tableau {
      */
     updateMatrix(updatedMatrix) {
         this.matrix = updatedMatrix;
+    }
+
+    /**
+     * Updates the tableau's updated matrix
+     * @param {*} updatedMatrix The matrix that should replace the tableau's current updated matrix
+     */
+    updateMatrices(updatedMatrix) {
+        this.initialMatrix = updatedMatrix;
+        this.matrix = updatedMatrix; 
     }
 
     /**
@@ -182,13 +189,24 @@ class Tableau {
      * @returns A copy of the current tableau 
      */
     copy() {
-        let copy = new Tableau(new Map(this.decisionVariables), [...this.tableauVariableTypes], math.clone(this.matrix), [...this.basis]);
 
-        if (this.bigMMatrix != null) {
-            copy.setBigMMatrix(math.clone(this.bigMMatrix));
-        }
+        let copy = new Tableau(new Map(this.decisionVariables), [...this.tableauVariableTypes], math.clone(this.initialMatrix), [...this.basis]);
+        copy.setArchivedInformation(math.clone(this.previousMatrices), this.previousBases.clone(), math.clone(this.previousBigMMatrices));
+
+        if (this.bigMMatrix != null) { copy.setBigMMatrix(math.clone(this.bigMMatrix)); }
 
         return copy;
+    }
+
+    /**
+     * Sets archive information
+     */
+     setArchivedInformation(previousMatrices, previousBases, previousBigMMatrices) {
+
+        this.previousMatrices = previousMatrices; 
+        this.previousBases = previousBases; 
+
+        if (previousBigMMatrices != null) { this.previousBigMMatrices = previousBigMMatrices; }
     }
 
     /**

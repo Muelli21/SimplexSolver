@@ -242,33 +242,3 @@
         }
     }
 }
-
-/**
- * Adds a row at a given index to the provided matrix
- * @param {*} matrix Matrix to which a row should be added at row with the index "rowIndex"
- */
-function removeRowFromMatrix(matrix, rowIndex) {
-
-    if (matrix.type != "DenseMatrix") {
-        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
-        return;
-    }
-
-    matrix._data.splice(rowIndex, 1);
-    matrix._size[0]--; //Decreases the matrix' row-size explicitly
-}
-
-/**
- * Adds a column at a given index to the provided matrix
- * @param {*} matrix Matrix to which a column should be added at the column with the index "columnIndex"
- */
-function removeColumnFromMatrix(matrix, columnIndex) {
-
-    if (matrix.type != "DenseMatrix") {
-        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
-        return;
-    }
-
-    for (let row of matrix._data) { row.splice(columnIndex, 1); }
-    matrix._size[1]--; //Decreases the matrix' row-size explicitly
-}

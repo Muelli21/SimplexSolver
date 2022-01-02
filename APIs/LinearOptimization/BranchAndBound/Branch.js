@@ -31,12 +31,12 @@ class Branch {
         let simplex = this.branchAndBound.getSimplex();
         let constraint = this.additionalConstraints[this.additionalConstraints.length - 1];
 
-        if (this.tableau == null) {
-            this.tableau = this.parent.getSimplexTableau().copy();
+        if (this.simplexTableau == null) {
+            this.simplexTableau = this.parent.getSimplexTableau().copy();
         }
 
-        this.tableau.addTableauState(TableauState.OPTIMAL); //To integrate further constraints, the simplex tableau has to be optimal
-        simplex.addConstraint(this.tableau, constraint);
+        this.simplexTableau.addTableauState(TableauState.OPTIMAL); //To integrate further constraints, the simplex tableau has to be optimal
+        simplex.addConstraint(this.simplexTableau, constraint);
     }
 
     /**
@@ -91,7 +91,7 @@ class Branch {
             let basisVariableIndex = basis[index];
             let variableType = variableTypeVector[basisVariableIndex];
 
-            if (variableType != VariableType.DECISION_VARIABLE) { continue; }
+            if (variableType != TableauVariableType.DECISION_VARIABLE) { continue; }
 
             let decisionVariable = decisionVariablesArray[basisVariableIndex - 1];
             let variableTypes = decisionVariable.getVariableTypes();

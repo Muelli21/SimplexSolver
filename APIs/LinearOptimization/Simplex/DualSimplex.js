@@ -118,14 +118,14 @@ class DualSimplex extends AbstractSimplex {
     integrateAdditionalConstraint(simplex, constraint) {
 
         let matrix = this.tableau.getMatrix();
-        let rowIndex = matrix.size()[0] - 1;
         let columnIndex = matrix.size()[1];
 
+        matrix = math.addRow(math.addColumn(matrix));
+
         //Adds an additional row and column, a slack variable and the rhs-value
-        addRowToMatrix(matrix, rowIndex);
-        addColumnToMatrix(matrix, columnIndex);
-        matrix.subset(math.index(rowIndex, columnIndex), 1);
-        matrix.subset(math.index(rowIndex, 0), constraint.getRightHandSideValue());
+
+        matrix.subset(math.index(0, columnIndex), 1);
+        matrix.subset(math.index(0, 0), constraint.getRightHandSideValue());
 
         this.tableau.getTableauVariableTypes().push(TableauVariableType.SLACK_VARIABLE);
 
@@ -133,16 +133,19 @@ class DualSimplex extends AbstractSimplex {
         let terms = constraint.getTerms();
         terms.forEach((coefficient, constraintDecisionVariableName) => {
             let decisionVariableIndex = 1 + getDecisionVariableIndex(simplex, constraintDecisionVariableName);
-            matrix.subset(math.index(rowIndex, decisionVariableIndex), coefficient);
+            matrix.subset(math.index(0, decisionVariableIndex), coefficient);
         });
 
         //NOTE: THIS IS PRETTY EXPERIMENTAL 
         let targetBasis = this.tableau.getBasis();
-        targetBasis.push(matrix.size()[1] - 1);
+        targetBasis.push(columnIndex);
+
+        this.tableau.updateMatrices(matrix);
         this.updateTableau(targetBasis); //This is meant to integrate the new constraint
 
         this.tableau.removeTableauState(TableauState.OPTIMAL);
         this.tableau.addTableauState(TableauState.DUAL_FEASIBLE);
+
         return this.solve();
     }
 
@@ -155,38 +158,4 @@ class DualSimplex extends AbstractSimplex {
             this.tableau.addTableauState(TableauState.FEASIBLE);
         }
     }
-}
-
-/**
- * Adds a row at a given index to the provided matrix
- * @param {*} matrix Matrix to which a row should be added at row with the index "rowIndex"
- */
-function addRowToMatrix(matrix, rowIndex) {
-
-    if (matrix.type != "DenseMatrix") {
-        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
-        return;
-    }
-
-    let columns = matrix.size()[1];
-    matrix._data.splice(rowIndex, 0, Array(columns).fill(0));
-    matrix._size[0]++; //Increases the matrix' row-size explicitly
-}
-
-/**
- * Adds a column at a given index to the provided matrix
- * @param {*} matrix Matrix to which a column should be added at the column with the index "columnIndex"
- */
-function addColumnToMatrix(matrix, columnIndex) {
-
-    if (matrix.type != "DenseMatrix") {
-        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
-        return;
-    }
-
-    for (let row of matrix._data) {
-        row.splice(columnIndex, 0, 0); //adds 0 as value of newly created matrix-entry
-    }
-
-    matrix._size[1]++; //Increases the matrix' row-size explicitly
 }

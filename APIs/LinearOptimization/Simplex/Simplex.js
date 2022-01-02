@@ -22,6 +22,7 @@ class Simplex {
      * @TODO Implement the actual primal simplex algorithm as well as the one for bigM problems
      */
     apply() {
+        
         let simplexType = determineBestSimplexType(this);
         let tableau;
 
@@ -47,9 +48,7 @@ class Simplex {
 
         //Implements integer feasibility by implementing branch and bound method
         if (this.hasToBeIntegerFeasible() && tableau.getTableauStates().has(TableauState.FEASIBLE)) {
-
-            console.log("Integer feasible");
-
+            console.log("Entering Branch and Bound");
             tableau = new BranchAndBound(this, tableau).calculateIntegerSolution();
         }
 
@@ -74,12 +73,12 @@ class Simplex {
             let simplifiedConstraint = simplifiedConstraints[index];
 
             if (tableau.getTableauStates().has(TableauState.OPTIMAL)) {
-                let dualSimplex = new DualSimplex(simplexTableau);
+                let dualSimplex = new DualSimplex(tableau);
                 tableau = dualSimplex.integrateAdditionalConstraint(this, simplifiedConstraint);
                 // Why exactly is the simplex tableau not returned but nevertheless the variable is overwritten? This does not have any effect?!
             } else {
                 console.log("It was not possible to fully implement the given constraint!");
-                simplexTableau.addSimplexTableauState(SimplexTableauState.INFEASIBLE);
+                tableau.addTableauState(TableauState.INFEASIBLE);
                 return;
             }
         }

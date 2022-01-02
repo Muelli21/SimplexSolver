@@ -28,7 +28,7 @@ class BranchAndBound {
 
     /**
      * Starts the branch and bound procedure and iteratively adds constraints to compute an integer solution
-     * @returns {SimplexTableau} A simplex tableau that is integer feasible for all variables that have to be integer-valued
+     * @returns {Tableau} A simplex tableau that is integer feasible for all variables that have to be integer-valued
      */
     calculateIntegerSolution() {
 
@@ -38,6 +38,9 @@ class BranchAndBound {
 
         if (this.rule == BranchingRule.LIFO || this.rule == BranchingRule.FIFO) {
             while (!this.candidateList.isEmpty()) {
+
+                console.debug(this.candidateList.clone())
+
                 let currentBranch = BranchingRule.FIFO ? this.candidateList.shift() : this.candidateList.pop();
                 if (currentBranch != this.headBranch) { currentBranch.solve(); }
                 currentBranch.evaluate();
@@ -58,7 +61,6 @@ class BranchAndBound {
         }
 
         this.integerBranches.sort((a, b) => a.getObjectiveFunctionValue() - b.getObjectiveFunctionValue());
-        console.log(this.integerBranches);
 
         //Return simplexTableau and not the branch
         let bestIntegerBranch = this.integerBranches[0];
@@ -83,6 +85,7 @@ class BranchAndBound {
                 this.integerBranches[0] = branch;
             }
         } else {
+
             this.integerBranches.push(branch);
         }
 

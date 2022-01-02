@@ -103,3 +103,86 @@ function simplifySimplexConstraints(constraints) {
 function simplifyBigMConstraints(constraints) {
     return constraints.map((constraint) => constraint.getRightHandSideValue() < 0 ? constraint.clone().multiply(-1) : constraint.clone());
 }
+
+/**
+ * Adds a row at a given index to the provided matrix
+ * @param {*} matrix Matrix to which a row should be added at row with the index "rowIndex"
+ */
+ function addRowToMatrix(matrix, rowIndex) {
+
+    console.log("Row addition")
+
+    if (matrix.type != "DenseMatrix") {
+        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
+        return;
+    }
+
+    let columns = matrix.size()[1];
+    matrix._data.splice(rowIndex, 0, Array(columns).fill(0));
+    matrix._size[0]++; //Increases the matrix' row-size explicitly
+}
+
+/**
+ * Adds a column at a given index to the provided matrix
+ * @param {*} matrix Matrix to which a column should be added at the column with the index "columnIndex"
+ */
+function addColumnToMatrix(matrix, columnIndex) {
+
+    console.log("Column addition")
+
+
+    if (matrix.type != "DenseMatrix") {
+        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
+        return;
+    }
+
+    for (let row of matrix._data) {
+        row.splice(columnIndex, 0, 0); //adds 0 as value of newly created matrix-entry
+    }
+
+    matrix._size[1]++; //Increases the matrix' row-size explicitly
+}
+
+math.addRow = function(matrix) {
+    return math.concat([Array(matrix.size()[1]).fill(0)], matrix, 0);
+}
+
+math.addColumn = function(matrix) {
+    return math.concat(matrix, Array(matrix.size()[0]).fill([0]), 1); 
+}
+
+/**
+ * Adds a row at a given index to the provided matrix
+ * @param {*} matrix Matrix to which a row should be added at row with the index "rowIndex"
+ */
+ function removeRowFromMatrix(matrix, rowIndex) {
+
+    console.log("Row removal")
+
+
+    if (matrix.type != "DenseMatrix") {
+        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
+        return;
+    }
+
+    matrix._data.splice(rowIndex, 1);
+    matrix._size[0]--; //Decreases the matrix' row-size explicitly
+}
+
+/**
+ * Adds a column at a given index to the provided matrix
+ * @param {*} matrix Matrix to which a column should be added at the column with the index "columnIndex"
+ */
+function removeColumnFromMatrix(matrix, columnIndex) {
+
+    console.log("Column removal")
+
+
+    if (matrix.type != "DenseMatrix") {
+        console.log("Rows can only be added to dense matrices using this function! Type of the current matrix: " + matrix.type);
+        return;
+    }
+
+    for (let row of matrix._data) { row.splice(columnIndex, 1); }
+    matrix._size[1]--; //Decreases the matrix' column-size explicitly
+}

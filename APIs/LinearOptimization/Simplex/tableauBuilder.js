@@ -11,8 +11,6 @@ function buildSimplexTableau(simplex) {
     let constraints = simplex.getConstraints();
     let decisionVariables = simplex.getDecisionVariables();
 
-    console.log(decisionVariables);
-
     let numberOfRows = constraints.length + 1; // +1 because of the objective function
     let numberOfColumns = 1 + decisionVariables.size + constraints.length; // +1 because of the rhs-values; constraints.length = number of slack-variables
 
@@ -50,5 +48,6 @@ function buildSimplexTableau(simplex) {
 
     let tableau = new Tableau(decisionVariables, variableTypeArray, matrix, basis);
     tableau.archiveCurrentInformation();
+
     return tableau;
 }
