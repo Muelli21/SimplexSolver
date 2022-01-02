@@ -134,7 +134,7 @@ function displaySimplexTableau(simplex, simplexTableau, coefficientMatrix, bigMC
                     let bigMEntry = bigMCoefficientMatrix.subset(math.index(rowIndex, columnIndex));
 
                     if (bigMEntry != 0) {
-                        tableEntry = tableEntry + bigMEntry.toFixed(2);
+                        tableEntry = tableEntry + bigMEntry.toFixed(2) + "M";
                     }
                 }
             }
