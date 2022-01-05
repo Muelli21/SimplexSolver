@@ -125,12 +125,21 @@ class AbstractSimplex {
 
         if (tableauStates.has(TableauState.PRIMAL_DEGENERATED)) { return; }
 
-        this.tableau.getRightHandSideValues().forEach((rightHandSideValue, index, matrix) => {
-            if (rightHandSideValue == 0) {
+        let rhsValues =  this.tableau.getRightHandSideValues();
+
+        if(typeof rhsValues == 'number'){ 
+            if (rhsValues == 0) {
                 this.tableau.addTableauState(TableauState.PRIMAL_DEGENERATED);
                 return;
-            }
-        });
+            } 
+        } else {
+            this.tableau.getRightHandSideValues().forEach((rightHandSideValue, index, matrix) => {
+                if (rightHandSideValue == 0) {
+                    this.tableau.addTableauState(TableauState.PRIMAL_DEGENERATED);
+                    return;
+                }
+            });
+        }        
     }
 
     /**
